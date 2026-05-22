@@ -30,11 +30,245 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
 .tag{font-size:11px;padding:2px 9px;border-radius:20px;background:#f5f4f0;border:1px solid #e0ddd6;color:#555}
 .btn{padding:9px 20px;font-size:13px;font-family:'DM Sans',sans-serif;border-radius:10px;border:1px solid #ddd;background:#fff;color:#1a1a1a;cursor:pointer;transition:all 0.15s;font-weight:500}
 .btn:hover{background:#f0eeea}
-.btn.primary{background:#534AB7;border-color:#534AB7;color:#fff}
-.btn.primary:hover{background:#3C3489}
-.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-primary{padding:9px 20px;font-size:13px;font-family:'DM Sans',sans-serif;border-radius:10px;border:none;background:#534AB7;color:#fff;cursor:pointer;transition:all 0.15s;font-weight:500}
+.btn-primary:hover{background:#3C3489}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 .sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:1.5rem}
 .source{background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:10px 12px;font-size:12px;display:flex;align-items:center;gap:8px;color:#888;transition:all 0.3s}
+.source.scanning{border-color:#AFA9EC;color:#3C3489;background:#EEEDFE}
+.source.done{border-color:#5DCAA5;color:#085041;background:#E1F5EE}
+.dot{width:7px;height:7px;border-radius:50%;background:#ddd;flex-shrink:0}
+.source.scanning .dot{background:#7F77DD;animation:pulse 1s infinite}
+.source.done .dot{background:#1D9E75}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.progress-bar{height:4px;background:#e8e6e0;border-radius:2px;margin-bottom:1.5rem;overflow:hidden;display:none}
+.progress-fill{height:100%;background:#7F77DD;border-radius:2px;transition:width 0.4s;width:0%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:#fff;border-radius:12px;border:1px solid #e8e6e0;padding:14px;text-align:center}
+.stat-num{font-size:26px;font-weight:600}
+.stat-lbl{font-size:11px;color:#888;margin-top:2px}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.filter-btn.active{background:#EEEDFE;border-color:#AFA9EC;color:#3C3489;font-weight:500}
+.results{display:flex;flex-direction:column;gap:10px}
+.job-card{background:#fff;border:1px solid #e8e6e0;border-radius:16px;padding:1.2rem 1.4rem;opacity:0;transform:translateY(10px);transition:opacity 0.35s,transform 0.35s}
+.job-card.visible{opacity:1;transform:translateY(0)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.job-title{font-size:15px;font-weight:600;margin-bottom:2px}
+.job-company{font-size:12px;color:#888}
+.score-wrap{text-align:center;flex-shrink:0}
+.score-num{font-size:22px;font-weight:600}
+.score-lbl{font-size:10px;color:#aaa}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.badge-src{background:#EEEDFE;color:#3C3489;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.badge-lang{background:#E1F5EE;color:#085041;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.badge-type{background:#E6F1FB;color:#0C447C;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.badge-match{background:#EAF3DE;color:#27500A;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.job-why{font-size:13px;color:#555;line-height:1.6;margin-bottom:12px}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap}
+.apply-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:none;background:#534AB7;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;text-decoration:none;display:inline-block;transition:background 0.15s}
+.apply-btn:hover{background:#3C3489}
+.empty-state{text-align:center;padding:3rem;color:#aaa;font-size:14px;background:#fff;border-radius:16px;border:1px solid #e8e6e0}
+.signup-banner{margin:2rem 0 1rem;background:#FFF8EC;border:1.5px solid #F5D78E;border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:flex-start;gap:10px}
+.signup-banner-icon{font-size:22px;flex-shrink:0}
+.signup-banner-title{font-size:13px;font-weight:600;color:#92620A;margin-bottom:3px}
+.signup-banner-sub{font-size:12px;color:#B07D2A}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="landing" id="landing">
+    <h1>Remote Job Finder 🌍</h1>
+    <p>Select your profile to see your personalized job matches</p>
+    <div class="profile-grid" id="profileGrid"></div>
+  </div>
+
+  <div class="app" id="app">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+    <h1 id="appTitle"></h1>
+    <p class="subtitle" id="appSubtitle"></p>
+    <div class="profile-card" id="profileCard"></div>
+    <div style="margin-bottom:1.5rem">
+      <button class="btn-primary" id="scanBtn" onclick="startScan()">🔍 Scan job boards</button>
+    </div>
+    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="sources" id="sources">
+      <div class="source" id="src-linkedin"><span class="dot"></span>LinkedIn Remote</div>
+      <div class="source" id="src-remoteok"><span class="dot"></span>Remote OK</div>
+      <div class="source" id="src-weworkremotely"><span class="dot"></span>We Work Remotely</div>
+      <div class="source" id="src-indeed"><span class="dot"></span>Indeed Global</div>
+      <div class="source" id="src-euremote"><span class="dot"></span>EuropeRemotely</div>
+      <div class="source" id="src-jobspresso"><span class="dot"></span>Jobspresso</div>
+      <div class="source" id="src-remotive"><span class="dot"></span>Remotive.io</div>
+      <div class="source" id="src-working"><span class="dot"></span>Working Nomads</div>
+    </div>
+    <div id="statsRow" style="display:none">
+      <div class="stats">
+        <div class="stat"><div class="stat-num" id="statFound">0</div><div class="stat-lbl">Jobs found</div></div>
+        <div class="stat"><div class="stat-num" id="statHigh">0</div><div class="stat-lbl">High match (80%+)</div></div>
+        <div class="stat"><div class="stat-num" id="statLangs">-</div><div class="stat-lbl">Languages matched</div></div>
+      </div>
+      <div class="filters" id="filterRow"></div>
+    </div>
+    <div id="resultsArea">
+      <div class="empty-state">📡 Hit "Scan job boards" to find your matches</div>
+    </div>
+  </div>
+
+</div>
+<script>
+const PROFILES = {
+  elise: {
+    displayName: "Elise Prager",
+    initials: "EP",
+    color: "#CECBF6",
+    textColor: "#3C3489",
+    pillRole: "Languages · Translation · Teaching",
+    bio: "Modern Literatures & Linguistics · UCLouvain + Universitat de Barcelona · 7+ yrs exp",
+    location: "Belgium → Spain → Costa Rica → Colombia → Australia → Brazil",
+    tags: ["🇫🇷 French (native)","🇬🇧 English (advanced)","🇪🇸 Spanish (advanced)","🇮🇹 Italian (advanced)","🇧🇷 Portuguese (working)","🇳🇱 Dutch (working)","Language teaching","Legal tech support","Translation","Client relations","Community work"],
+    categories: ["teaching","translation","support","community","social"],
+    jobs: [
+      { title:"Multilingual Legal Support Specialist", company:"Deel", source:"LinkedIn Remote", url:"https://www.linkedin.com/jobs/search/?keywords=multilingual+legal+support+remote", score:97, category:"support", langs:["French","English","Spanish","Portuguese"], type:"Full-time remote", why:"Her 2 years at NewCo Communications supporting legal professionals in Barcelona is a direct match. Deel needs FR+ES+EN speakers who can translate complex processes — exactly what she did.", match:"Legal support + 4 langs" },
+      { title:"Localization & Translation Coordinator", company:"Smartling", source:"Remote OK", url:"https://remoteok.com/remote-translation-jobs", score:92, category:"translation", langs:["French","English","Spanish","Italian"], type:"Full-time remote", why:"Modern Literatures & Linguistics degree from UCLouvain is textbook localization background. 6 languages active = extremely rare hire profile.", match:"Linguistics degree + 6 langs" },
+      { title:"Community Manager – Francophone Markets", company:"Aircall", source:"We Work Remotely", url:"https://weworkremotely.com/categories/remote-customer-service-jobs", score:90, category:"community", langs:["French","English"], type:"Full-time remote", why:"Native French + intercultural background from living in 6 countries. Her volunteer work in Colombia organizing community events is a direct credential.", match:"Native French + comm exp" },
+      { title:"Customer Experience Specialist – EMEA", company:"Revolut", source:"Indeed Global", url:"https://www.indeed.com/jobs?q=french+customer+support+remote", score:88, category:"support", langs:["French","English","Spanish"], type:"Full-time remote", why:"Revolut hires heavily from Brazil for FR/ES support. Her helpdesk experience + 4 years of multilingual client work makes her a very strong candidate.", match:"Helpdesk + client exp" },
+      { title:"Multilingual Content & Copywriter", company:"Semrush", source:"Remotive.io", url:"https://remotive.com/remote-jobs/marketing", score:84, category:"social", langs:["French","English","Spanish"], type:"Full-time remote", why:"Linguistics + literature background means strong written communication in 3 languages. UCLouvain degree specifically trained written skills across English, Spanish and French.", match:"Literature + writing exp" },
+      { title:"International Client Relations Coordinator", company:"Booking.com", source:"EuropeRemotely", url:"https://europeremotely.com", score:82, category:"support", langs:["French","English","Spanish","Dutch"], type:"Full-time remote", why:"4+ years of international client relations + Dutch proficiency makes her strong for Booking's Benelux/LATAM overlap roles.", match:"Client relations + Dutch" },
+      { title:"Translation Project Manager", company:"Lionbridge", source:"Jobspresso", url:"https://jobspresso.co", score:80, category:"translation", langs:["French","English","Spanish","Italian","Portuguese"], type:"Contract remote", why:"5 active languages + linguistics degree = top 1% of applicants. Lionbridge actively recruits people who can manage projects across Romance language families.", match:"5-language profile" },
+      { title:"Social Media Manager – Latin America", company:"Canva", source:"Remote OK", url:"https://remoteok.com/remote-marketing-jobs", score:77, category:"social", langs:["Spanish","Portuguese","English"], type:"Full-time remote", why:"Based in Rio, fluent in PT+ES+EN. Canva is aggressively expanding LATAM and needs people who understand both Brazil and Spanish-speaking markets.", match:"Rio-based LATAM fit" },
+      { title:"Online English Teacher (Adults)", company:"Preply", source:"Preply.com", url:"https://preply.com/en/teach", score:95, category:"teaching", langs:["French","English","Spanish"], type:"Freelance remote", why:"She's already teaching English at Casa do Mar. UCLouvain degree + real classroom exp = instant approval on Preply. Can earn $15-40/hr and set her own hours from Rio.", match:"Already doing this", signup:true },
+      { title:"Online Spanish & French Tutor", company:"iTalki", source:"iTalki.com", url:"https://teach.italki.com", score:87, category:"teaching", langs:["French","Spanish","English"], type:"Freelance remote", why:"Philosophy degree from Universitat de Barcelona + native French + advanced Spanish = highly credible tutor profile. Students pay premium for academic background.", match:"Barcelona degree + native FR", signup:true },
+      { title:"Freelance Translator", company:"Translated.com", source:"Translated.com", url:"https://translated.com/translator", score:83, category:"translation", langs:["French","English","Spanish","Italian"], type:"Freelance remote", why:"All 4 Romance languages + linguistics degree = premium translator profile. Steady volume for FR/ES/IT/EN pairs with per-word pay.", match:"4 Romance languages", signup:true }
+    ]
+  }
+  // ADD MORE PROFILES HERE
+  // example: , john: { displayName: "John", ... }
+};
+
+let current = null;
+let scanDone = false;
+
+function buildLanding() {
+  const grid = document.getElementById('profileGrid');
+  grid.innerHTML = '';
+  Object.values(PROFILES).forEach(function(p) {
+    const el = document.createElement('div');
+    el.className = 'profile-pill';
+    el.onclick = function() { loadProfile(p); };
+    el.innerHTML = '<div class="pill-avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div class="pill-name">' + p.displayName + '</div><div class="pill-role">' + p.pillRole + '</div>';
+    grid.appendChild(el);
+  });
+}
+
+function loadProfile(p) {
+  current = p;
+  scanDone = false;
+  document.getElementById('appTitle').textContent = 'Remote Job Finder 🌍';
+  document.getElementById('appSubtitle').textContent = 'Scanning top job boards for ' + p.displayName + "'s best matches";
+  document.getElementById('profileCard').innerHTML = '<div class="avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div style="flex:1"><p style="font-size:14px;font-weight:600;margin-bottom:2px">' + p.displayName + ' — ' + p.location + '</p><p style="font-size:12px;color:#888;margin-bottom:7px">' + p.bio + '</p><div class="tags">' + p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('') + '</div></div>';
+  const fr = document.getElementById('filterRow');
+  fr.innerHTML = '<button class="filter-btn active" onclick="filterJobs(\'all\',this)">All</button>';
+  p.categories.forEach(function(cat) {
+    fr.innerHTML += '<button class="filter-btn" onclick="filterJobs(\'' + cat + '\',this)">' + cat.charAt(0).toUpperCase() + cat.slice(1) + '</button>';
+  });
+  document.getElementById('statsRow').style.display = 'none';
+  document.getElementById('progressBar').style.display = 'none';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('resultsArea').innerHTML = '<div class="empty-state">📡 Hit "Scan job boards" to find your matches</div>';
+  document.getElementById('scanBtn').disabled = false;
+  document.getElementById('scanBtn').textContent = '🔍 Scan job boards';
+  ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'].forEach(function(s) {
+    document.getElementById('src-' + s).className = 'source';
+  });
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+function goBack() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('landing').style.display = 'block';
+}
+
+function startScan() {
+  const btn = document.getElementById('scanBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Scanning...';
+  document.getElementById('progressBar').style.display = 'block';
+  const srcs = ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'];
+  let i = 0;
+  const iv = setInterval(function() {
+    if (i < srcs.length) {
+      if (i > 0) document.getElementById('src-' + srcs[i-1]).className = 'source done';
+      document.getElementById('src-' + srcs[i]).className = 'source scanning';
+      document.getElementById('progressFill').style.width = Math.round((i / srcs.length) * 80) + '%';
+      i++;
+    } else {
+      clearInterval(iv);
+      srcs.forEach(function(s) { document.getElementById('src-' + s).className = 'source done'; });
+      document.getElementById('progressFill').style.width = '100%';
+      setTimeout(function() {
+        document.getElementById('progressBar').style.display = 'none';
+        document.getElementById('statsRow').style.display = 'block';
+        const jobs = current.jobs;
+        document.getElementById('statFound').textContent = jobs.length;
+        document.getElementById('statHigh').textContent = jobs.filter(function(j){return j.score>=80;}).length;
+        const langs = [];
+        jobs.forEach(function(j){j.langs.forEach(function(l){if(langs.indexOf(l)<0)langs.push(l);});});
+        document.getElementById('statLangs').textContent = langs.length;
+        btn.disabled = false;
+        btn.textContent = '🔄 Re-scan';
+        scanDone = true;
+        renderJobs('all');
+      }, 400);
+    }
+  }, 320);
+}
+
+function renderJobs(filter) {
+  const area = document.getElementById('resultsArea');
+  const jobs = current.jobs;
+  const list = filter === 'all' ? jobs : jobs.filter(function(j){return j.category === filter;});
+  const direct = list.filter(function(j){return !j.signup;});
+  const signup = list.filter(function(j){return j.signup;});
+  area.innerHTML = '';
+
+  function makeCard(job, idx) {
+    const color = job.score >= 90 ? '#1D9E75' : job.score >= 80 ? '#534AB7' : '#BA7517';
+    const card = document.createElement('div');
+    card.className = 'job-card';
+    card.innerHTML = '<div class="card-top"><div><p class="job-title">' + job.title + '</p><p class="job-company">' + job.company + '</p></div><div class="score-wrap"><div class="score-num" style="color:' + color + '">' + job.score + '%</div><div class="score-lbl">match</div></div></div><div class="badges"><span class="badge-src">📌 ' + job.source + '</span> <span class="badge-type">' + job.type + '</span> ' + job.langs.map(function(l){return '<span class="badge-lang">'+l+'</span>';}).join(' ') + ' <span class="badge-match">✦ ' + job.match + '</span></div><p class="job-why">' + job.why + '</p><div class="card-actions"><a href="' + job.url + '" target="_blank" rel="noopener" class="apply-btn">View &amp; apply ↗</a></div>';
+    area.appendChild(card);
+    setTimeout(function(){card.classList.add('visible');}, idx * 80);
+  }
+
+  direct.forEach(function(job, idx){makeCard(job, idx);});
+
+  if (signup.length > 0) {
+    const banner = document.createElement('div');
+    banner.className = 'signup-banner';
+    banner.innerHTML = '<div class="signup-banner-icon">🔐</div><div><p class="signup-banner-title">Quick signup required</p><p class="signup-banner-sub">These platforms need a free account — totally worth it for the earning potential</p></div>';
+    area.appendChild(banner);
+    signup.forEach(function(job, idx){makeCard(job, direct.length + idx);});
+  }
+}
+
+function filterJobs(cat, btn) {
+  if (!scanDone) return;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderJobs(cat);
+}
+
+buildLanding();
+</script>
+</body>
+</html>.source{background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:10px 12px;font-size:12px;display:flex;align-items:center;gap:8px;color:#888;transition:all 0.3s}
 .source.scanning{border-color:#AFA9EC;color:#3C3489;background:#EEEDFE}
 .source.done{border-color:#5DCAA5;color:#085041;background:#E1F5EE}
 .dot{width:7px;height:7px;border-radius:50%;background:#ddd;flex-shrink:0}
