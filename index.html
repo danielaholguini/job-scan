@@ -28,8 +28,6 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
 .avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;flex-shrink:0}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .tag{font-size:11px;padding:2px 9px;border-radius:20px;background:#f5f4f0;border:1px solid #e0ddd6;color:#555}
-.btn{padding:9px 20px;font-size:13px;font-family:'DM Sans',sans-serif;border-radius:10px;border:1px solid #ddd;background:#fff;color:#1a1a1a;cursor:pointer;transition:all 0.15s;font-weight:500}
-.btn:hover{background:#f0eeea}
 .btn-primary{padding:9px 20px;font-size:13px;font-family:'DM Sans',sans-serif;border-radius:10px;border:none;background:#534AB7;color:#fff;cursor:pointer;transition:all 0.15s;font-weight:500}
 .btn-primary:hover{background:#3C3489}
 .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
@@ -60,7 +58,6 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
 .score-num{font-size:22px;font-weight:600}
 .score-lbl{font-size:10px;color:#aaa}
 .badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
 .badge-src{background:#EEEDFE;color:#3C3489;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
 .badge-lang{background:#E1F5EE;color:#085041;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
 .badge-type{background:#E6F1FB;color:#0C447C;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
@@ -81,7 +78,7 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
 <div class="container">
 
   <div class="landing" id="landing">
-    <h1>Remote Job Finder 🌍</h1>
+    <h1>Remote Job Finder</h1>
     <p>Select your profile to see your personalized job matches</p>
     <div class="profile-grid" id="profileGrid"></div>
   </div>
@@ -94,7 +91,7 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
     <p class="subtitle" id="appSubtitle"></p>
     <div class="profile-card" id="profileCard"></div>
     <div style="margin-bottom:1.5rem">
-      <button class="btn-primary" id="scanBtn" onclick="startScan()">🔍 Scan job boards</button>
+      <button class="btn-primary" id="scanBtn" onclick="startScan()">Scan job boards</button>
     </div>
     <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="sources" id="sources">
@@ -111,18 +108,18 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
       <div class="stats">
         <div class="stat"><div class="stat-num" id="statFound">0</div><div class="stat-lbl">Jobs found</div></div>
         <div class="stat"><div class="stat-num" id="statHigh">0</div><div class="stat-lbl">High match (80%+)</div></div>
-        <div class="stat"><div class="stat-num" id="statLangs">-</div><div class="stat-lbl">Languages matched</div></div>
+        <div class="stat"><div class="stat-num" id="statLangs">-</div><div class="stat-lbl">Skills matched</div></div>
       </div>
       <div class="filters" id="filterRow"></div>
     </div>
     <div id="resultsArea">
-      <div class="empty-state">📡 Hit "Scan job boards" to find your matches</div>
+      <div class="empty-state">Hit "Scan job boards" to find your matches</div>
     </div>
   </div>
 
 </div>
 <script>
-const PROFILES = {
+var PROFILES = {
   elise: {
     displayName: "Elise Prager",
     initials: "EP",
@@ -130,62 +127,89 @@ const PROFILES = {
     textColor: "#3C3489",
     pillRole: "Languages · Translation · Teaching",
     bio: "Modern Literatures & Linguistics · UCLouvain + Universitat de Barcelona · 7+ yrs exp",
-    location: "Belgium → Spain → Costa Rica → Colombia → Australia → Brazil",
-    tags: ["🇫🇷 French (native)","🇬🇧 English (advanced)","🇪🇸 Spanish (advanced)","🇮🇹 Italian (advanced)","🇧🇷 Portuguese (working)","🇳🇱 Dutch (working)","Language teaching","Legal tech support","Translation","Client relations","Community work"],
+    location: "Belgium to Brazil via Spain, Costa Rica, Colombia, Australia",
+    tags: ["French (native)","English (advanced)","Spanish (advanced)","Italian (advanced)","Portuguese (working)","Dutch (working)","Language teaching","Legal tech support","Translation","Client relations","Community work"],
     categories: ["teaching","translation","support","community","social"],
     jobs: [
-      { title:"Multilingual Legal Support Specialist", company:"Deel", source:"LinkedIn Remote", url:"https://www.linkedin.com/jobs/search/?keywords=multilingual+legal+support+remote", score:97, category:"support", langs:["French","English","Spanish","Portuguese"], type:"Full-time remote", why:"Her 2 years at NewCo Communications supporting legal professionals in Barcelona is a direct match. Deel needs FR+ES+EN speakers who can translate complex processes — exactly what she did.", match:"Legal support + 4 langs" },
-      { title:"Localization & Translation Coordinator", company:"Smartling", source:"Remote OK", url:"https://remoteok.com/remote-translation-jobs", score:92, category:"translation", langs:["French","English","Spanish","Italian"], type:"Full-time remote", why:"Modern Literatures & Linguistics degree from UCLouvain is textbook localization background. 6 languages active = extremely rare hire profile.", match:"Linguistics degree + 6 langs" },
-      { title:"Community Manager – Francophone Markets", company:"Aircall", source:"We Work Remotely", url:"https://weworkremotely.com/categories/remote-customer-service-jobs", score:90, category:"community", langs:["French","English"], type:"Full-time remote", why:"Native French + intercultural background from living in 6 countries. Her volunteer work in Colombia organizing community events is a direct credential.", match:"Native French + comm exp" },
-      { title:"Customer Experience Specialist – EMEA", company:"Revolut", source:"Indeed Global", url:"https://www.indeed.com/jobs?q=french+customer+support+remote", score:88, category:"support", langs:["French","English","Spanish"], type:"Full-time remote", why:"Revolut hires heavily from Brazil for FR/ES support. Her helpdesk experience + 4 years of multilingual client work makes her a very strong candidate.", match:"Helpdesk + client exp" },
-      { title:"Multilingual Content & Copywriter", company:"Semrush", source:"Remotive.io", url:"https://remotive.com/remote-jobs/marketing", score:84, category:"social", langs:["French","English","Spanish"], type:"Full-time remote", why:"Linguistics + literature background means strong written communication in 3 languages. UCLouvain degree specifically trained written skills across English, Spanish and French.", match:"Literature + writing exp" },
-      { title:"International Client Relations Coordinator", company:"Booking.com", source:"EuropeRemotely", url:"https://europeremotely.com", score:82, category:"support", langs:["French","English","Spanish","Dutch"], type:"Full-time remote", why:"4+ years of international client relations + Dutch proficiency makes her strong for Booking's Benelux/LATAM overlap roles.", match:"Client relations + Dutch" },
-      { title:"Translation Project Manager", company:"Lionbridge", source:"Jobspresso", url:"https://jobspresso.co", score:80, category:"translation", langs:["French","English","Spanish","Italian","Portuguese"], type:"Contract remote", why:"5 active languages + linguistics degree = top 1% of applicants. Lionbridge actively recruits people who can manage projects across Romance language families.", match:"5-language profile" },
-      { title:"Social Media Manager – Latin America", company:"Canva", source:"Remote OK", url:"https://remoteok.com/remote-marketing-jobs", score:77, category:"social", langs:["Spanish","Portuguese","English"], type:"Full-time remote", why:"Based in Rio, fluent in PT+ES+EN. Canva is aggressively expanding LATAM and needs people who understand both Brazil and Spanish-speaking markets.", match:"Rio-based LATAM fit" },
-      { title:"Online English Teacher (Adults)", company:"Preply", source:"Preply.com", url:"https://preply.com/en/teach", score:95, category:"teaching", langs:["French","English","Spanish"], type:"Freelance remote", why:"She's already teaching English at Casa do Mar. UCLouvain degree + real classroom exp = instant approval on Preply. Can earn $15-40/hr and set her own hours from Rio.", match:"Already doing this", signup:true },
-      { title:"Online Spanish & French Tutor", company:"iTalki", source:"iTalki.com", url:"https://teach.italki.com", score:87, category:"teaching", langs:["French","Spanish","English"], type:"Freelance remote", why:"Philosophy degree from Universitat de Barcelona + native French + advanced Spanish = highly credible tutor profile. Students pay premium for academic background.", match:"Barcelona degree + native FR", signup:true },
-      { title:"Freelance Translator", company:"Translated.com", source:"Translated.com", url:"https://translated.com/translator", score:83, category:"translation", langs:["French","English","Spanish","Italian"], type:"Freelance remote", why:"All 4 Romance languages + linguistics degree = premium translator profile. Steady volume for FR/ES/IT/EN pairs with per-word pay.", match:"4 Romance languages", signup:true }
+      {title:"Multilingual Legal Support Specialist",company:"Deel",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=multilingual+legal+support+remote",score:97,category:"support",langs:["French","English","Spanish","Portuguese"],type:"Full-time remote",why:"Her 2 years at NewCo Communications supporting legal professionals in Barcelona is a direct match. Deel needs FR+ES+EN speakers who can translate complex processes.",match:"Legal support + 4 langs"},
+      {title:"Localization & Translation Coordinator",company:"Smartling",source:"Remote OK",url:"https://remoteok.com/remote-translation-jobs",score:92,category:"translation",langs:["French","English","Spanish","Italian"],type:"Full-time remote",why:"Modern Literatures & Linguistics degree from UCLouvain is textbook localization background. 6 languages active = extremely rare hire profile.",match:"Linguistics degree + 6 langs"},
+      {title:"Community Manager - Francophone Markets",company:"Aircall",source:"We Work Remotely",url:"https://weworkremotely.com/categories/remote-customer-service-jobs",score:90,category:"community",langs:["French","English"],type:"Full-time remote",why:"Native French + intercultural background from living in 6 countries. Her volunteer work in Colombia organizing community events is a direct credential.",match:"Native French + comm exp"},
+      {title:"Customer Experience Specialist - EMEA",company:"Revolut",source:"Indeed Global",url:"https://www.indeed.com/jobs?q=french+customer+support+remote",score:88,category:"support",langs:["French","English","Spanish"],type:"Full-time remote",why:"Revolut hires heavily from Brazil for FR/ES support. Her helpdesk experience + 4 years of multilingual client work makes her a very strong candidate.",match:"Helpdesk + client exp"},
+      {title:"Multilingual Content & Copywriter",company:"Semrush",source:"Remotive.io",url:"https://remotive.com/remote-jobs/marketing",score:84,category:"social",langs:["French","English","Spanish"],type:"Full-time remote",why:"Linguistics + literature background means strong written communication in 3 languages. UCLouvain degree specifically trained written skills across English, Spanish and French.",match:"Literature + writing exp"},
+      {title:"International Client Relations Coordinator",company:"Booking.com",source:"EuropeRemotely",url:"https://europeremotely.com",score:82,category:"support",langs:["French","English","Spanish","Dutch"],type:"Full-time remote",why:"4+ years of international client relations + Dutch proficiency makes her strong for Booking's Benelux/LATAM overlap roles.",match:"Client relations + Dutch"},
+      {title:"Translation Project Manager",company:"Lionbridge",source:"Jobspresso",url:"https://jobspresso.co",score:80,category:"translation",langs:["French","English","Spanish","Italian","Portuguese"],type:"Contract remote",why:"5 active languages + linguistics degree = top 1% of applicants. Lionbridge actively recruits people who can manage projects across Romance language families.",match:"5-language profile"},
+      {title:"Social Media Manager - Latin America",company:"Canva",source:"Remote OK",url:"https://remoteok.com/remote-marketing-jobs",score:77,category:"social",langs:["Spanish","Portuguese","English"],type:"Full-time remote",why:"Based in Rio, fluent in PT+ES+EN. Canva is aggressively expanding LATAM and needs people who understand both Brazil and Spanish-speaking markets.",match:"Rio-based LATAM fit"},
+      {title:"Online English Teacher (Adults)",company:"Preply",source:"Preply.com",url:"https://preply.com/en/teach",score:95,category:"teaching",langs:["French","English","Spanish"],type:"Freelance remote",why:"She's already teaching English at Casa do Mar. UCLouvain degree + real classroom exp = instant approval on Preply. Can earn $15-40/hr from Rio.",match:"Already doing this",signup:true},
+      {title:"Online Spanish & French Tutor",company:"iTalki",source:"iTalki.com",url:"https://teach.italki.com",score:87,category:"teaching",langs:["French","Spanish","English"],type:"Freelance remote",why:"Philosophy degree from Universitat de Barcelona + native French + advanced Spanish = highly credible tutor profile. Students pay premium for academic background.",match:"Barcelona degree + native FR",signup:true},
+      {title:"Freelance Translator",company:"Translated.com",source:"Translated.com",url:"https://translated.com/translator",score:83,category:"translation",langs:["French","English","Spanish","Italian"],type:"Freelance remote",why:"All 4 Romance languages + linguistics degree = premium translator profile. Steady volume for FR/ES/IT/EN pairs with per-word pay.",match:"4 Romance languages",signup:true}
+    ]
+  },
+  hector: {
+    displayName: "Hector Holguin",
+    initials: "HH",
+    color: "#D4EDDA",
+    textColor: "#1A5C30",
+    pillRole: "Banking Core · SDET · QA Automation",
+    bio: "Senior SDET & Banking Core Specialist · COBIS & Cyberbank · 20+ yrs exp · Ecuador",
+    location: "Guayaquil, Ecuador (open to remote)",
+    tags: ["Cyberbank Core & Digital","COBIS","Java","Selenium","JavaScript","Docker","SQL","POSTMAN","QA Automation","SDET","Microservices","Agile","FullStack Dev","Banking Core","Activas/Cartera"],
+    categories: ["sdet","consulting","banking","development"],
+    jobs: [
+      {title:"Senior SDET - Banking & Fintech",company:"Toptal",source:"Toptal.com",url:"https://www.toptal.com/finance/blockchain-developers",score:97,category:"sdet",langs:["Spanish","English"],type:"Freelance remote",why:"20+ years in banking core with SDET expertise, Selenium, Docker, JavaScript automation. Toptal's elite fintech network specifically seeks COBIS/Cyberbank specialists - extremely rare globally.",match:"Top 1% fintech SDET"},
+      {title:"QA Automation Architect - Fintech",company:"Deel",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=QA+automation+architect+fintech+remote",score:95,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"His AI-CURSOR automation framework that improved BNA's test efficiency by 40% is exactly the kind of innovation Deel's QA teams need. Senior leadership + hands-on automation is rare.",match:"40% efficiency gain proof"},
+      {title:"Core Banking Consultant - COBIS/Temenos",company:"Consultora IT Regional",source:"Indeed LATAM",url:"https://www.indeed.com/jobs?q=cobis+core+banking+consultant+remote",score:94,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"COBIS expertise across 6+ countries (Ecuador, Panama, Argentina, Nicaragua, Costa Rica, Colombia) over 20 years. Banks modernizing to COBIS globally need exactly this profile.",match:"COBIS across 6 countries"},
+      {title:"Cyberbank Platform Specialist",company:"Technisys / SoFi",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=cyberbank+specialist+remote",score:93,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"Nearly 5 years as Tech Lead on Cyberbank Core and Digital across BIBANK, BNA and Banesco. He is one of very few people globally with this depth on the platform.",match:"5yrs Cyberbank tech lead"},
+      {title:"Senior Test Automation Engineer - Financial Services",company:"Globant",source:"Globant.com",url:"https://www.globant.com/careers/",score:91,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"Globant actively recruits senior SDET profiles in Ecuador for LATAM banking clients. His Selenium + Docker + JIRA + ZEPHYR stack matches their financial services practice exactly.",match:"Globant LATAM banking fit"},
+      {title:"Banking Software QA Lead",company:"Softserve",source:"Remote OK",url:"https://remoteok.com/remote-qa-jobs",score:88,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"20+ years in loan, credit, guarantees and onboarding digital modules. Softserve's banking clients need QA leads who understand the full credit lifecycle - he has it all.",match:"Full credit lifecycle exp"},
+      {title:"IT Consulting - Core Bancario LATAM",company:"Accenture",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=core+bancario+consultor+LATAM+remote",score:86,category:"consulting",langs:["Spanish","English"],type:"Contract remote",why:"Accenture's LATAM banking practice constantly needs COBIS and Cyberbank consultants for modernization projects. His cross-country experience in 6+ markets is a premium differentiator.",match:"6-country banking exp"},
+      {title:"Freelance Banking Core Developer",company:"Upwork",source:"Upwork.com",url:"https://www.upwork.com/freelance-jobs/banking/",score:84,category:"development",langs:["Spanish","English"],type:"Freelance remote",why:"COBIS, Cyberbank, Java, SQL, Sybase, Store Procedures expertise is incredibly niche. On Upwork, banking core freelancers with his stack command $80-150/hr - very high demand, very low supply.",match:"$80-150/hr niche stack",signup:true},
+      {title:"Senior QA Engineer - Microservices",company:"Wizeline",source:"Remotive.io",url:"https://remotive.com/remote-jobs/qa",score:82,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"His work validating microservices in BNA's Onboarding Digital flow and reducing friction in new client registration maps directly to Wizeline's fintech QA practice.",match:"Microservices QA exp"},
+      {title:"Banking Core Freelance Consultant",company:"Freelancer.com",source:"Freelancer.com",url:"https://www.freelancer.com/jobs/banking/",score:79,category:"consulting",langs:["Spanish","English"],type:"Freelance remote",why:"NIIFs, PCI compliance, T-24 migration, COBIS across multiple banks. These are niche skills that regional banks in LATAM actively post for on freelance platforms.",match:"NIIFs + PCI + T-24",signup:true}
     ]
   }
-  // ADD MORE PROFILES HERE
-  // example: , john: { displayName: "John", ... }
 };
 
-let current = null;
-let scanDone = false;
+var current = null;
+var scanDone = false;
 
 function buildLanding() {
-  const grid = document.getElementById('profileGrid');
+  var grid = document.getElementById('profileGrid');
   grid.innerHTML = '';
-  Object.values(PROFILES).forEach(function(p) {
-    const el = document.createElement('div');
+  var keys = Object.keys(PROFILES);
+  for (var i = 0; i < keys.length; i++) {
+    var p = PROFILES[keys[i]];
+    var el = document.createElement('div');
     el.className = 'profile-pill';
-    el.onclick = function() { loadProfile(p); };
+    el.setAttribute('data-key', keys[i]);
     el.innerHTML = '<div class="pill-avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div class="pill-name">' + p.displayName + '</div><div class="pill-role">' + p.pillRole + '</div>';
+    el.onclick = (function(prof) { return function() { loadProfile(prof); }; })(p);
     grid.appendChild(el);
-  });
+  }
 }
 
 function loadProfile(p) {
   current = p;
   scanDone = false;
-  document.getElementById('appTitle').textContent = 'Remote Job Finder 🌍';
+  document.getElementById('appTitle').textContent = 'Remote Job Finder';
   document.getElementById('appSubtitle').textContent = 'Scanning top job boards for ' + p.displayName + "'s best matches";
-  document.getElementById('profileCard').innerHTML = '<div class="avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div style="flex:1"><p style="font-size:14px;font-weight:600;margin-bottom:2px">' + p.displayName + ' — ' + p.location + '</p><p style="font-size:12px;color:#888;margin-bottom:7px">' + p.bio + '</p><div class="tags">' + p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('') + '</div></div>';
-  const fr = document.getElementById('filterRow');
+  var tagsHtml = '';
+  for (var i = 0; i < p.tags.length; i++) { tagsHtml += '<span class="tag">' + p.tags[i] + '</span>'; }
+  document.getElementById('profileCard').innerHTML = '<div class="avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div style="flex:1"><p style="font-size:14px;font-weight:600;margin-bottom:2px">' + p.displayName + ' - ' + p.location + '</p><p style="font-size:12px;color:#888;margin-bottom:7px">' + p.bio + '</p><div class="tags">' + tagsHtml + '</div></div>';
+  var fr = document.getElementById('filterRow');
   fr.innerHTML = '<button class="filter-btn active" onclick="filterJobs(\'all\',this)">All</button>';
-  p.categories.forEach(function(cat) {
-    fr.innerHTML += '<button class="filter-btn" onclick="filterJobs(\'' + cat + '\',this)">' + cat.charAt(0).toUpperCase() + cat.slice(1) + '</button>';
-  });
+  for (var j = 0; j < p.categories.length; j++) {
+    var cat = p.categories[j];
+    var label = cat.charAt(0).toUpperCase() + cat.slice(1);
+    fr.innerHTML += '<button class="filter-btn" onclick="filterJobs(\'' + cat + '\',this)">' + label + '</button>';
+  }
   document.getElementById('statsRow').style.display = 'none';
   document.getElementById('progressBar').style.display = 'none';
   document.getElementById('progressFill').style.width = '0%';
-  document.getElementById('resultsArea').innerHTML = '<div class="empty-state">📡 Hit "Scan job boards" to find your matches</div>';
+  document.getElementById('resultsArea').innerHTML = '<div class="empty-state">Hit "Scan job boards" to find your matches</div>';
   document.getElementById('scanBtn').disabled = false;
-  document.getElementById('scanBtn').textContent = '🔍 Scan job boards';
-  ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'].forEach(function(s) {
-    document.getElementById('src-' + s).className = 'source';
-  });
+  document.getElementById('scanBtn').textContent = 'Scan job boards';
+  var srcs = ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'];
+  for (var k = 0; k < srcs.length; k++) { document.getElementById('src-' + srcs[k]).className = 'source'; }
   document.getElementById('landing').style.display = 'none';
   document.getElementById('app').style.display = 'block';
 }
@@ -196,13 +220,13 @@ function goBack() {
 }
 
 function startScan() {
-  const btn = document.getElementById('scanBtn');
+  var btn = document.getElementById('scanBtn');
   btn.disabled = true;
-  btn.textContent = '⏳ Scanning...';
+  btn.textContent = 'Scanning...';
   document.getElementById('progressBar').style.display = 'block';
-  const srcs = ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'];
-  let i = 0;
-  const iv = setInterval(function() {
+  var srcs = ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'];
+  var i = 0;
+  var iv = setInterval(function() {
     if (i < srcs.length) {
       if (i > 0) document.getElementById('src-' + srcs[i-1]).className = 'source done';
       document.getElementById('src-' + srcs[i]).className = 'source scanning';
@@ -210,19 +234,21 @@ function startScan() {
       i++;
     } else {
       clearInterval(iv);
-      srcs.forEach(function(s) { document.getElementById('src-' + s).className = 'source done'; });
+      for (var k = 0; k < srcs.length; k++) { document.getElementById('src-' + srcs[k]).className = 'source done'; }
       document.getElementById('progressFill').style.width = '100%';
       setTimeout(function() {
         document.getElementById('progressBar').style.display = 'none';
         document.getElementById('statsRow').style.display = 'block';
-        const jobs = current.jobs;
+        var jobs = current.jobs;
         document.getElementById('statFound').textContent = jobs.length;
-        document.getElementById('statHigh').textContent = jobs.filter(function(j){return j.score>=80;}).length;
-        const langs = [];
-        jobs.forEach(function(j){j.langs.forEach(function(l){if(langs.indexOf(l)<0)langs.push(l);});});
-        document.getElementById('statLangs').textContent = langs.length;
+        var high = 0;
+        for (var j = 0; j < jobs.length; j++) { if (jobs[j].score >= 80) high++; }
+        document.getElementById('statHigh').textContent = high;
+        var skills = [];
+        for (var j = 0; j < jobs.length; j++) { for (var l = 0; l < jobs[j].langs.length; l++) { if (skills.indexOf(jobs[j].langs[l]) < 0) skills.push(jobs[j].langs[l]); } }
+        document.getElementById('statLangs').textContent = skills.length;
         btn.disabled = false;
-        btn.textContent = '🔄 Re-scan';
+        btn.textContent = 'Re-scan';
         scanDone = true;
         renderJobs('all');
       }, 400);
@@ -231,36 +257,41 @@ function startScan() {
 }
 
 function renderJobs(filter) {
-  const area = document.getElementById('resultsArea');
-  const jobs = current.jobs;
-  const list = filter === 'all' ? jobs : jobs.filter(function(j){return j.category === filter;});
-  const direct = list.filter(function(j){return !j.signup;});
-  const signup = list.filter(function(j){return j.signup;});
+  var area = document.getElementById('resultsArea');
+  var jobs = current.jobs;
+  var list = [];
+  for (var i = 0; i < jobs.length; i++) { if (filter === 'all' || jobs[i].category === filter) list.push(jobs[i]); }
+  var direct = [];
+  var signup = [];
+  for (var i = 0; i < list.length; i++) { if (list[i].signup) signup.push(list[i]); else direct.push(list[i]); }
   area.innerHTML = '';
 
   function makeCard(job, idx) {
-    const color = job.score >= 90 ? '#1D9E75' : job.score >= 80 ? '#534AB7' : '#BA7517';
-    const card = document.createElement('div');
+    var color = job.score >= 90 ? '#1D9E75' : job.score >= 80 ? '#534AB7' : '#BA7517';
+    var card = document.createElement('div');
     card.className = 'job-card';
-    card.innerHTML = '<div class="card-top"><div><p class="job-title">' + job.title + '</p><p class="job-company">' + job.company + '</p></div><div class="score-wrap"><div class="score-num" style="color:' + color + '">' + job.score + '%</div><div class="score-lbl">match</div></div></div><div class="badges"><span class="badge-src">📌 ' + job.source + '</span> <span class="badge-type">' + job.type + '</span> ' + job.langs.map(function(l){return '<span class="badge-lang">'+l+'</span>';}).join(' ') + ' <span class="badge-match">✦ ' + job.match + '</span></div><p class="job-why">' + job.why + '</p><div class="card-actions"><a href="' + job.url + '" target="_blank" rel="noopener" class="apply-btn">View &amp; apply ↗</a></div>';
+    var langsHtml = '';
+    for (var l = 0; l < job.langs.length; l++) { langsHtml += '<span class="badge-lang">' + job.langs[l] + '</span> '; }
+    card.innerHTML = '<div class="card-top"><div><p class="job-title">' + job.title + '</p><p class="job-company">' + job.company + '</p></div><div class="score-wrap"><div class="score-num" style="color:' + color + '">' + job.score + '%</div><div class="score-lbl">match</div></div></div><div class="badges"><span class="badge-src">' + job.source + '</span> <span class="badge-type">' + job.type + '</span> ' + langsHtml + '<span class="badge-match">' + job.match + '</span></div><p class="job-why">' + job.why + '</p><div class="card-actions"><a href="' + job.url + '" target="_blank" rel="noopener" class="apply-btn">View & apply</a></div>';
     area.appendChild(card);
-    setTimeout(function(){card.classList.add('visible');}, idx * 80);
+    (function(c) { setTimeout(function() { c.classList.add('visible'); }, idx * 80); })(card);
   }
 
-  direct.forEach(function(job, idx){makeCard(job, idx);});
+  for (var i = 0; i < direct.length; i++) { makeCard(direct[i], i); }
 
   if (signup.length > 0) {
-    const banner = document.createElement('div');
+    var banner = document.createElement('div');
     banner.className = 'signup-banner';
-    banner.innerHTML = '<div class="signup-banner-icon">🔐</div><div><p class="signup-banner-title">Quick signup required</p><p class="signup-banner-sub">These platforms need a free account — totally worth it for the earning potential</p></div>';
+    banner.innerHTML = '<div class="signup-banner-icon">🔐</div><div><p class="signup-banner-title">Quick signup required</p><p class="signup-banner-sub">These platforms need a free account - totally worth it for the earning potential</p></div>';
     area.appendChild(banner);
-    signup.forEach(function(job, idx){makeCard(job, direct.length + idx);});
+    for (var i = 0; i < signup.length; i++) { makeCard(signup[i], direct.length + i); }
   }
 }
 
 function filterJobs(cat, btn) {
   if (!scanDone) return;
-  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  var btns = document.querySelectorAll('.filter-btn');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
   btn.classList.add('active');
   renderJobs(cat);
 }
