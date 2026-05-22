@@ -12,7 +12,7 @@ body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#1a1a1a;min-heigh
 .landing{text-align:center;padding:4rem 1rem 2rem}
 .landing h1{font-family:'DM Serif Display',serif;font-size:34px;font-weight:400;margin-bottom:10px}
 .landing p{font-size:14px;color:#888;margin-bottom:2.5rem}
-.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-width:520px;margin:0 auto}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-width:620px;margin:0 auto}
 .profile-pill{background:#fff;border:1.5px solid #e8e6e0;border-radius:16px;padding:1.4rem 1rem;cursor:pointer;transition:all 0.2s;text-align:center}
 .profile-pill:hover{border-color:#AFA9EC;background:#EEEDFE;transform:translateY(-2px);box-shadow:0 4px 16px rgba(83,74,183,0.1)}
 .pill-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;margin:0 auto 10px}
@@ -76,23 +76,17 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
 </head>
 <body>
 <div class="container">
-
   <div class="landing" id="landing">
     <h1>Remote Job Finder</h1>
     <p>Select your profile to see your personalized job matches</p>
     <div class="profile-grid" id="profileGrid"></div>
   </div>
-
   <div class="app" id="app">
-    <div class="top-bar">
-      <button class="back-btn" onclick="goBack()">← Back</button>
-    </div>
+    <div class="top-bar"><button class="back-btn" onclick="goBack()">Back</button></div>
     <h1 id="appTitle"></h1>
     <p class="subtitle" id="appSubtitle"></p>
     <div class="profile-card" id="profileCard"></div>
-    <div style="margin-bottom:1.5rem">
-      <button class="btn-primary" id="scanBtn" onclick="startScan()">Scan job boards</button>
-    </div>
+    <div style="margin-bottom:1.5rem"><button class="btn-primary" id="scanBtn" onclick="startScan()">Scan job boards</button></div>
     <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="sources" id="sources">
       <div class="source" id="src-linkedin"><span class="dot"></span>LinkedIn Remote</div>
@@ -112,11 +106,8 @@ h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;margin-bo
       </div>
       <div class="filters" id="filterRow"></div>
     </div>
-    <div id="resultsArea">
-      <div class="empty-state">Hit "Scan job boards" to find your matches</div>
-    </div>
+    <div id="resultsArea"><div class="empty-state">Hit Scan to find your matches</div></div>
   </div>
-
 </div>
 <script>
 var PROFILES = {
@@ -132,14 +123,14 @@ var PROFILES = {
     categories: ["teaching","translation","support","community","social"],
     jobs: [
       {title:"Multilingual Legal Support Specialist",company:"Deel",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=multilingual+legal+support+remote",score:97,category:"support",langs:["French","English","Spanish","Portuguese"],type:"Full-time remote",why:"Her 2 years at NewCo Communications supporting legal professionals in Barcelona is a direct match. Deel needs FR+ES+EN speakers who can translate complex processes.",match:"Legal support + 4 langs"},
-      {title:"Localization & Translation Coordinator",company:"Smartling",source:"Remote OK",url:"https://remoteok.com/remote-translation-jobs",score:92,category:"translation",langs:["French","English","Spanish","Italian"],type:"Full-time remote",why:"Modern Literatures & Linguistics degree from UCLouvain is textbook localization background. 6 languages active = extremely rare hire profile.",match:"Linguistics degree + 6 langs"},
+      {title:"Localization & Translation Coordinator",company:"Smartling",source:"Remote OK",url:"https://remoteok.com/remote-translation-jobs",score:92,category:"translation",langs:["French","English","Spanish","Italian"],type:"Full-time remote",why:"Modern Literatures & Linguistics degree from UCLouvain is textbook localization background. 6 languages active = extremely rare hire profile.",match:"Linguistics + 6 langs"},
       {title:"Community Manager - Francophone Markets",company:"Aircall",source:"We Work Remotely",url:"https://weworkremotely.com/categories/remote-customer-service-jobs",score:90,category:"community",langs:["French","English"],type:"Full-time remote",why:"Native French + intercultural background from living in 6 countries. Her volunteer work in Colombia organizing community events is a direct credential.",match:"Native French + comm exp"},
       {title:"Customer Experience Specialist - EMEA",company:"Revolut",source:"Indeed Global",url:"https://www.indeed.com/jobs?q=french+customer+support+remote",score:88,category:"support",langs:["French","English","Spanish"],type:"Full-time remote",why:"Revolut hires heavily from Brazil for FR/ES support. Her helpdesk experience + 4 years of multilingual client work makes her a very strong candidate.",match:"Helpdesk + client exp"},
       {title:"Multilingual Content & Copywriter",company:"Semrush",source:"Remotive.io",url:"https://remotive.com/remote-jobs/marketing",score:84,category:"social",langs:["French","English","Spanish"],type:"Full-time remote",why:"Linguistics + literature background means strong written communication in 3 languages. UCLouvain degree specifically trained written skills across English, Spanish and French.",match:"Literature + writing exp"},
       {title:"International Client Relations Coordinator",company:"Booking.com",source:"EuropeRemotely",url:"https://europeremotely.com",score:82,category:"support",langs:["French","English","Spanish","Dutch"],type:"Full-time remote",why:"4+ years of international client relations + Dutch proficiency makes her strong for Booking's Benelux/LATAM overlap roles.",match:"Client relations + Dutch"},
       {title:"Translation Project Manager",company:"Lionbridge",source:"Jobspresso",url:"https://jobspresso.co",score:80,category:"translation",langs:["French","English","Spanish","Italian","Portuguese"],type:"Contract remote",why:"5 active languages + linguistics degree = top 1% of applicants. Lionbridge actively recruits people who can manage projects across Romance language families.",match:"5-language profile"},
       {title:"Social Media Manager - Latin America",company:"Canva",source:"Remote OK",url:"https://remoteok.com/remote-marketing-jobs",score:77,category:"social",langs:["Spanish","Portuguese","English"],type:"Full-time remote",why:"Based in Rio, fluent in PT+ES+EN. Canva is aggressively expanding LATAM and needs people who understand both Brazil and Spanish-speaking markets.",match:"Rio-based LATAM fit"},
-      {title:"Online English Teacher (Adults)",company:"Preply",source:"Preply.com",url:"https://preply.com/en/teach",score:95,category:"teaching",langs:["French","English","Spanish"],type:"Freelance remote",why:"She's already teaching English at Casa do Mar. UCLouvain degree + real classroom exp = instant approval on Preply. Can earn $15-40/hr from Rio.",match:"Already doing this",signup:true},
+      {title:"Online English Teacher (Adults)",company:"Preply",source:"Preply.com",url:"https://preply.com/en/teach",score:95,category:"teaching",langs:["French","English","Spanish"],type:"Freelance remote",why:"She is already teaching English at Casa do Mar. UCLouvain degree + real classroom exp = instant approval on Preply. Can earn $15-40/hr from Rio.",match:"Already doing this",signup:true},
       {title:"Online Spanish & French Tutor",company:"iTalki",source:"iTalki.com",url:"https://teach.italki.com",score:87,category:"teaching",langs:["French","Spanish","English"],type:"Freelance remote",why:"Philosophy degree from Universitat de Barcelona + native French + advanced Spanish = highly credible tutor profile. Students pay premium for academic background.",match:"Barcelona degree + native FR",signup:true},
       {title:"Freelance Translator",company:"Translated.com",source:"Translated.com",url:"https://translated.com/translator",score:83,category:"translation",langs:["French","English","Spanish","Italian"],type:"Freelance remote",why:"All 4 Romance languages + linguistics degree = premium translator profile. Steady volume for FR/ES/IT/EN pairs with per-word pay.",match:"4 Romance languages",signup:true}
     ]
@@ -150,21 +141,44 @@ var PROFILES = {
     color: "#D4EDDA",
     textColor: "#1A5C30",
     pillRole: "Banking Core · SDET · QA Automation",
-    bio: "Senior SDET & Banking Core Specialist · COBIS & Cyberbank · 20+ yrs exp · Ecuador",
+    bio: "Senior SDET & Banking Core Specialist · COBIS & Cyberbank · 20+ yrs exp",
     location: "Guayaquil, Ecuador (open to remote)",
-    tags: ["Cyberbank Core & Digital","COBIS","Java","Selenium","JavaScript","Docker","SQL","POSTMAN","QA Automation","SDET","Microservices","Agile","FullStack Dev","Banking Core","Activas/Cartera"],
+    tags: ["Cyberbank Core & Digital","COBIS","Java","Selenium","JavaScript","Docker","SQL","POSTMAN","QA Automation","SDET","Microservices","Agile","FullStack Dev","Activas/Cartera"],
     categories: ["sdet","consulting","banking","development"],
     jobs: [
       {title:"Senior SDET - Banking & Fintech",company:"Toptal",source:"Toptal.com",url:"https://www.toptal.com/finance/blockchain-developers",score:97,category:"sdet",langs:["Spanish","English"],type:"Freelance remote",why:"20+ years in banking core with SDET expertise, Selenium, Docker, JavaScript automation. Toptal's elite fintech network specifically seeks COBIS/Cyberbank specialists - extremely rare globally.",match:"Top 1% fintech SDET"},
       {title:"QA Automation Architect - Fintech",company:"Deel",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=QA+automation+architect+fintech+remote",score:95,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"His AI-CURSOR automation framework that improved BNA's test efficiency by 40% is exactly the kind of innovation Deel's QA teams need. Senior leadership + hands-on automation is rare.",match:"40% efficiency gain proof"},
-      {title:"Core Banking Consultant - COBIS/Temenos",company:"Consultora IT Regional",source:"Indeed LATAM",url:"https://www.indeed.com/jobs?q=cobis+core+banking+consultant+remote",score:94,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"COBIS expertise across 6+ countries (Ecuador, Panama, Argentina, Nicaragua, Costa Rica, Colombia) over 20 years. Banks modernizing to COBIS globally need exactly this profile.",match:"COBIS across 6 countries"},
+      {title:"Core Banking Consultant - COBIS/Temenos",company:"Consultora IT Regional",source:"Indeed LATAM",url:"https://www.indeed.com/jobs?q=cobis+core+banking+consultant+remote",score:94,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"COBIS expertise across 6+ countries over 20 years. Banks modernizing to COBIS globally need exactly this profile.",match:"COBIS across 6 countries"},
       {title:"Cyberbank Platform Specialist",company:"Technisys / SoFi",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=cyberbank+specialist+remote",score:93,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"Nearly 5 years as Tech Lead on Cyberbank Core and Digital across BIBANK, BNA and Banesco. He is one of very few people globally with this depth on the platform.",match:"5yrs Cyberbank tech lead"},
       {title:"Senior Test Automation Engineer - Financial Services",company:"Globant",source:"Globant.com",url:"https://www.globant.com/careers/",score:91,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"Globant actively recruits senior SDET profiles in Ecuador for LATAM banking clients. His Selenium + Docker + JIRA + ZEPHYR stack matches their financial services practice exactly.",match:"Globant LATAM banking fit"},
-      {title:"Banking Software QA Lead",company:"Softserve",source:"Remote OK",url:"https://remoteok.com/remote-qa-jobs",score:88,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"20+ years in loan, credit, guarantees and onboarding digital modules. Softserve's banking clients need QA leads who understand the full credit lifecycle - he has it all.",match:"Full credit lifecycle exp"},
+      {title:"Banking Software QA Lead",company:"Softserve",source:"Remote OK",url:"https://remoteok.com/remote-qa-jobs",score:88,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"20+ years in loan, credit, guarantees and onboarding digital modules. Softserve's banking clients need QA leads who understand the full credit lifecycle.",match:"Full credit lifecycle exp"},
       {title:"IT Consulting - Core Bancario LATAM",company:"Accenture",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=core+bancario+consultor+LATAM+remote",score:86,category:"consulting",langs:["Spanish","English"],type:"Contract remote",why:"Accenture's LATAM banking practice constantly needs COBIS and Cyberbank consultants for modernization projects. His cross-country experience in 6+ markets is a premium differentiator.",match:"6-country banking exp"},
-      {title:"Freelance Banking Core Developer",company:"Upwork",source:"Upwork.com",url:"https://www.upwork.com/freelance-jobs/banking/",score:84,category:"development",langs:["Spanish","English"],type:"Freelance remote",why:"COBIS, Cyberbank, Java, SQL, Sybase, Store Procedures expertise is incredibly niche. On Upwork, banking core freelancers with his stack command $80-150/hr - very high demand, very low supply.",match:"$80-150/hr niche stack",signup:true},
-      {title:"Senior QA Engineer - Microservices",company:"Wizeline",source:"Remotive.io",url:"https://remotive.com/remote-jobs/qa",score:82,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"His work validating microservices in BNA's Onboarding Digital flow and reducing friction in new client registration maps directly to Wizeline's fintech QA practice.",match:"Microservices QA exp"},
-      {title:"Banking Core Freelance Consultant",company:"Freelancer.com",source:"Freelancer.com",url:"https://www.freelancer.com/jobs/banking/",score:79,category:"consulting",langs:["Spanish","English"],type:"Freelance remote",why:"NIIFs, PCI compliance, T-24 migration, COBIS across multiple banks. These are niche skills that regional banks in LATAM actively post for on freelance platforms.",match:"NIIFs + PCI + T-24",signup:true}
+      {title:"Senior QA Engineer - Microservices",company:"Wizeline",source:"Remotive.io",url:"https://remotive.com/remote-jobs/qa",score:82,category:"sdet",langs:["Spanish","English"],type:"Full-time remote",why:"His work validating microservices in BNA's Onboarding Digital flow maps directly to Wizeline's fintech QA practice.",match:"Microservices QA exp"},
+      {title:"Freelance Banking Core Developer",company:"Upwork",source:"Upwork.com",url:"https://www.upwork.com/freelance-jobs/banking/",score:84,category:"development",langs:["Spanish","English"],type:"Freelance remote",why:"COBIS, Cyberbank, Java, SQL, Sybase, Store Procedures expertise is incredibly niche. Banking core freelancers with his stack command $80-150/hr on Upwork.",match:"$80-150/hr niche stack",signup:true},
+      {title:"Banking Core Freelance Consultant",company:"Freelancer.com",source:"Freelancer.com",url:"https://www.freelancer.com/jobs/banking/",score:79,category:"consulting",langs:["Spanish","English"],type:"Freelance remote",why:"NIIFs, PCI compliance, T-24 migration, COBIS across multiple banks. Niche skills that regional banks in LATAM actively post for on freelance platforms.",match:"NIIFs + PCI + T-24",signup:true}
+    ]
+  },
+  josue: {
+    displayName: "Josue Holguin",
+    initials: "JH",
+    color: "#FDE8D0",
+    textColor: "#7A3B10",
+    pillRole: "Data Engineering · COBIS · Azure",
+    bio: "COBIS Developer & Data Engineer · Azure · Databricks · Python · 3.84 GPA CS degree",
+    location: "Guayaquil, Ecuador (open to remote)",
+    tags: ["Python","PL/SQL","Java","Spark","Databricks","Azure Data Factory","Microsoft Azure","Medallion Architecture","Data Quality","ETL","COBIS","Functional Testing","QA Scripts","Banking Core","Web Scraping","PyTorch/CNN"],
+    categories: ["data","banking","development","qa"],
+    jobs: [
+      {title:"Junior Data Engineer - Azure & Databricks",company:"Globant",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=data+engineer+azure+databricks+remote+latam",score:96,category:"data",langs:["Spanish","English"],type:"Full-time remote",why:"His Banco Bolivariano work - Medallion architecture, Azure Data Factory, Databricks pipelines, Bronze-to-Gold migration - is a direct match for Globant's data engineering practice. 3.84 GPA CS degree from University of the People seals it.",match:"Medallion + Azure + 3.84 GPA"},
+      {title:"Data Engineer - Financial Services",company:"Rappi / Nubank",source:"Remote OK",url:"https://remoteok.com/remote-data-engineer-jobs",score:94,category:"data",langs:["Spanish","English"],type:"Full-time remote",why:"LATAM fintechs like Nubank and Rappi are aggressively hiring data engineers who understand banking data (savings accounts, checking accounts, credit cycles). His Banco Bolivariano experience is a perfect bridge.",match:"Banking data + LATAM fintech"},
+      {title:"COBIS Developer - Modulo Clientes & Cuentas",company:"Consultora IT Regional",source:"Indeed LATAM",url:"https://www.indeed.com/jobs?q=cobis+developer+remote",score:93,category:"banking",langs:["Spanish","English"],type:"Contract remote",why:"He has hands-on COBIS development across Clientes, Cuentas de Ahorro and Cuentas Corrientes modules at two companies. That specific combo is extremely rare for someone his age.",match:"COBIS modules exp"},
+      {title:"Azure Data Engineer - ETL & Pipelines",company:"Accenture LATAM",source:"LinkedIn Remote",url:"https://www.linkedin.com/jobs/search/?keywords=azure+data+engineer+ETL+remote+latam",score:92,category:"data",langs:["Spanish","English"],type:"Full-time remote",why:"His ETL automation project at Banco Bolivariano - generating Excel error reports, validating business rules, integrating on-premise and cloud - is exactly what Accenture's LATAM data practice hires for.",match:"ETL automation + Azure"},
+      {title:"Junior Data Scientist - Python & ML",company:"MercadoLibre",source:"Remotive.io",url:"https://remotive.com/remote-jobs/data",score:89,category:"data",langs:["Spanish","English"],type:"Full-time remote",why:"His CNN cancer detection project in PyTorch and S&P 500 web scraping app show ML initiative beyond his job role. MercadoLibre's data science team loves engineers who self-learn ML on personal projects.",match:"ML personal projects"},
+      {title:"QA Engineer - Core Banking Systems",company:"Softserve",source:"We Work Remotely",url:"https://weworkremotely.com/categories/remote-dev-software-engineering-jobs",score:87,category:"qa",langs:["Spanish","English"],type:"Full-time remote",why:"He ran functional testing on 24Movil's account opening flow and developed QA scripts for banking data validation. That combination of functional + data QA in banking is a strong differentiator.",match:"Banking QA + data validation"},
+      {title:"Backend Developer - Banking APIs",company:"Wizeline",source:"Jobspresso",url:"https://jobspresso.co",score:85,category:"development",langs:["Spanish","English"],type:"Full-time remote",why:"PL/SQL, Java, Python plus COBIS internals means he can build and maintain banking APIs end-to-end. Wizeline's fintech clients need this exact profile for modernization projects.",match:"PL/SQL + Java + Python"},
+      {title:"Data Analyst - Banking & Compliance",company:"Konfio",source:"Remote OK",url:"https://remoteok.com/remote-data-jobs",score:83,category:"data",langs:["Spanish","English"],type:"Full-time remote",why:"His regulatory ETL work at Genuide - standardizing data for compliance with controllers and auditors - maps directly to fintech compliance analytics roles at companies like Konfio.",match:"Regulatory data exp"},
+      {title:"Freelance Data Engineer",company:"Upwork",source:"Upwork.com",url:"https://www.upwork.com/freelance-jobs/data-engineering/",score:88,category:"data",langs:["Spanish","English"],type:"Freelance remote",why:"Python + Spark + Databricks + Azure on a banking project at age 20-something is a premium freelance profile. Data engineers with banking experience command $40-80/hr on Upwork.",match:"$40-80/hr data stack",signup:true},
+      {title:"Cloud Data Developer - Azure",company:"Toptal",source:"Toptal.com",url:"https://www.toptal.com/data-science",score:82,category:"data",langs:["Spanish","English"],type:"Freelance remote",why:"Toptal's screening is tough but his Databricks + Azure Data Factory + Medallion architecture work at a real bank makes him a strong candidate for their data engineering network.",match:"Real bank Azure exp",signup:true}
     ]
   }
 };
@@ -180,9 +194,8 @@ function buildLanding() {
     var p = PROFILES[keys[i]];
     var el = document.createElement('div');
     el.className = 'profile-pill';
-    el.setAttribute('data-key', keys[i]);
     el.innerHTML = '<div class="pill-avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div class="pill-name">' + p.displayName + '</div><div class="pill-role">' + p.pillRole + '</div>';
-    el.onclick = (function(prof) { return function() { loadProfile(prof); }; })(p);
+    el.onclick = (function(prof){return function(){loadProfile(prof);};})(p);
     grid.appendChild(el);
   }
 }
@@ -193,23 +206,22 @@ function loadProfile(p) {
   document.getElementById('appTitle').textContent = 'Remote Job Finder';
   document.getElementById('appSubtitle').textContent = 'Scanning top job boards for ' + p.displayName + "'s best matches";
   var tagsHtml = '';
-  for (var i = 0; i < p.tags.length; i++) { tagsHtml += '<span class="tag">' + p.tags[i] + '</span>'; }
+  for (var i = 0; i < p.tags.length; i++) tagsHtml += '<span class="tag">' + p.tags[i] + '</span>';
   document.getElementById('profileCard').innerHTML = '<div class="avatar" style="background:' + p.color + ';color:' + p.textColor + '">' + p.initials + '</div><div style="flex:1"><p style="font-size:14px;font-weight:600;margin-bottom:2px">' + p.displayName + ' - ' + p.location + '</p><p style="font-size:12px;color:#888;margin-bottom:7px">' + p.bio + '</p><div class="tags">' + tagsHtml + '</div></div>';
   var fr = document.getElementById('filterRow');
   fr.innerHTML = '<button class="filter-btn active" onclick="filterJobs(\'all\',this)">All</button>';
   for (var j = 0; j < p.categories.length; j++) {
     var cat = p.categories[j];
-    var label = cat.charAt(0).toUpperCase() + cat.slice(1);
-    fr.innerHTML += '<button class="filter-btn" onclick="filterJobs(\'' + cat + '\',this)">' + label + '</button>';
+    fr.innerHTML += '<button class="filter-btn" onclick="filterJobs(\'' + cat + '\',this)">' + cat.charAt(0).toUpperCase() + cat.slice(1) + '</button>';
   }
   document.getElementById('statsRow').style.display = 'none';
   document.getElementById('progressBar').style.display = 'none';
   document.getElementById('progressFill').style.width = '0%';
-  document.getElementById('resultsArea').innerHTML = '<div class="empty-state">Hit "Scan job boards" to find your matches</div>';
+  document.getElementById('resultsArea').innerHTML = '<div class="empty-state">Hit Scan to find your matches</div>';
   document.getElementById('scanBtn').disabled = false;
   document.getElementById('scanBtn').textContent = 'Scan job boards';
   var srcs = ['linkedin','remoteok','weworkremotely','indeed','euremote','jobspresso','remotive','working'];
-  for (var k = 0; k < srcs.length; k++) { document.getElementById('src-' + srcs[k]).className = 'source'; }
+  for (var k = 0; k < srcs.length; k++) document.getElementById('src-' + srcs[k]).className = 'source';
   document.getElementById('landing').style.display = 'none';
   document.getElementById('app').style.display = 'block';
 }
@@ -230,22 +242,22 @@ function startScan() {
     if (i < srcs.length) {
       if (i > 0) document.getElementById('src-' + srcs[i-1]).className = 'source done';
       document.getElementById('src-' + srcs[i]).className = 'source scanning';
-      document.getElementById('progressFill').style.width = Math.round((i / srcs.length) * 80) + '%';
+      document.getElementById('progressFill').style.width = Math.round((i/srcs.length)*80) + '%';
       i++;
     } else {
       clearInterval(iv);
-      for (var k = 0; k < srcs.length; k++) { document.getElementById('src-' + srcs[k]).className = 'source done'; }
+      for (var k = 0; k < srcs.length; k++) document.getElementById('src-' + srcs[k]).className = 'source done';
       document.getElementById('progressFill').style.width = '100%';
-      setTimeout(function() {
+      setTimeout(function(){
         document.getElementById('progressBar').style.display = 'none';
         document.getElementById('statsRow').style.display = 'block';
         var jobs = current.jobs;
         document.getElementById('statFound').textContent = jobs.length;
         var high = 0;
-        for (var j = 0; j < jobs.length; j++) { if (jobs[j].score >= 80) high++; }
+        for (var j = 0; j < jobs.length; j++) if (jobs[j].score >= 80) high++;
         document.getElementById('statHigh').textContent = high;
         var skills = [];
-        for (var j = 0; j < jobs.length; j++) { for (var l = 0; l < jobs[j].langs.length; l++) { if (skills.indexOf(jobs[j].langs[l]) < 0) skills.push(jobs[j].langs[l]); } }
+        for (var j = 0; j < jobs.length; j++) for (var l = 0; l < jobs[j].langs.length; l++) if (skills.indexOf(jobs[j].langs[l]) < 0) skills.push(jobs[j].langs[l]);
         document.getElementById('statLangs').textContent = skills.length;
         btn.disabled = false;
         btn.textContent = 'Re-scan';
@@ -259,39 +271,34 @@ function startScan() {
 function renderJobs(filter) {
   var area = document.getElementById('resultsArea');
   var jobs = current.jobs;
-  var list = [];
-  for (var i = 0; i < jobs.length; i++) { if (filter === 'all' || jobs[i].category === filter) list.push(jobs[i]); }
-  var direct = [];
-  var signup = [];
+  var list = [], direct = [], signup = [];
+  for (var i = 0; i < jobs.length; i++) if (filter === 'all' || jobs[i].category === filter) list.push(jobs[i]);
   for (var i = 0; i < list.length; i++) { if (list[i].signup) signup.push(list[i]); else direct.push(list[i]); }
   area.innerHTML = '';
-
   function makeCard(job, idx) {
     var color = job.score >= 90 ? '#1D9E75' : job.score >= 80 ? '#534AB7' : '#BA7517';
     var card = document.createElement('div');
     card.className = 'job-card';
     var langsHtml = '';
-    for (var l = 0; l < job.langs.length; l++) { langsHtml += '<span class="badge-lang">' + job.langs[l] + '</span> '; }
-    card.innerHTML = '<div class="card-top"><div><p class="job-title">' + job.title + '</p><p class="job-company">' + job.company + '</p></div><div class="score-wrap"><div class="score-num" style="color:' + color + '">' + job.score + '%</div><div class="score-lbl">match</div></div></div><div class="badges"><span class="badge-src">' + job.source + '</span> <span class="badge-type">' + job.type + '</span> ' + langsHtml + '<span class="badge-match">' + job.match + '</span></div><p class="job-why">' + job.why + '</p><div class="card-actions"><a href="' + job.url + '" target="_blank" rel="noopener" class="apply-btn">View & apply</a></div>';
+    for (var l = 0; l < job.langs.length; l++) langsHtml += '<span class="badge-lang">' + job.langs[l] + '</span> ';
+    card.innerHTML = '<div class="card-top"><div><p class="job-title">' + job.title + '</p><p class="job-company">' + job.company + '</p></div><div class="score-wrap"><div class="score-num" style="color:' + color + '">' + job.score + '%</div><div class="score-lbl">match</div></div></div><div class="badges"><span class="badge-src">' + job.source + '</span> <span class="badge-type">' + job.type + '</span> ' + langsHtml + '<span class="badge-match">' + job.match + '</span></div><p class="job-why">' + job.why + '</p><div class="card-actions"><a href="' + job.url + '" target="_blank" rel="noopener" class="apply-btn">View and apply</a></div>';
     area.appendChild(card);
-    (function(c) { setTimeout(function() { c.classList.add('visible'); }, idx * 80); })(card);
+    (function(c){setTimeout(function(){c.classList.add('visible');},idx*80);})(card);
   }
-
-  for (var i = 0; i < direct.length; i++) { makeCard(direct[i], i); }
-
+  for (var i = 0; i < direct.length; i++) makeCard(direct[i], i);
   if (signup.length > 0) {
     var banner = document.createElement('div');
     banner.className = 'signup-banner';
-    banner.innerHTML = '<div class="signup-banner-icon">🔐</div><div><p class="signup-banner-title">Quick signup required</p><p class="signup-banner-sub">These platforms need a free account - totally worth it for the earning potential</p></div>';
+    banner.innerHTML = '<div class="signup-banner-icon">&#128272;</div><div><p class="signup-banner-title">Quick signup required</p><p class="signup-banner-sub">These platforms need a free account - totally worth it for the earning potential</p></div>';
     area.appendChild(banner);
-    for (var i = 0; i < signup.length; i++) { makeCard(signup[i], direct.length + i); }
+    for (var i = 0; i < signup.length; i++) makeCard(signup[i], direct.length + i);
   }
 }
 
 function filterJobs(cat, btn) {
   if (!scanDone) return;
   var btns = document.querySelectorAll('.filter-btn');
-  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   btn.classList.add('active');
   renderJobs(cat);
 }
